@@ -3,6 +3,7 @@
 
 #include <termios.h> //for term flags
 #include "evar.h"
+#include "graphics.h"
 
 //F1 to F12 are ordered as 0-11 after the 255 escape char
 #define INSERT 50 //in kbd[], this would be 255 50
@@ -16,15 +17,25 @@
 #define END 70
 #define HOME 72
 
-extern u8 kbd[64]; //parsed keyboard input
-extern u32 kbdSize; //size of input buffer
-extern uvec2 res; //term resolution
+typedef struct {
+	uvec2 res;
+	struct termios oldTermFlags;
+	u32 max_fps;
+	u8 kbd[64];
+	u32 kbdSize;
+	gr Gr;
+	void* global_data;
+} elafriContext;
 
-void GetResolution();
+typedef void (*frameHandler)(F32, elafriContext*);
 
-void ElafriInit(); //Initialization procedures
+uvec2 GetResolution();
 
-void Exit();
+elafriContext ElafriInit(); //Initialization procedures
 
-void Input(); //Gets user input from Terminal
+void Exit(elafriContext);
+
+u32 Input(); //Gets user input from Terminal
+
+void MainLoop(frameHandler callback, elafriContext current);
 #endif
