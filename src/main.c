@@ -13,7 +13,6 @@ int main()
 
 	/*Timekeeping-related Inits*/
 	InitTimer(ftimer); //timer
-	struct timeval mtv = {0,1}; //needed for querying input
 	u32 fps = FPS;
 	int exec_time, wt;
 	F32 delta=0; //Δt per frame
@@ -21,12 +20,9 @@ int main()
 	RenderLoop:
 		StartTimer(ftimer);
 
-		Input(&mtv); //get user input since last frame
-		if (kbdSize) {
-			for (int i=0; i<kbdSize; i++) printf("%d ", kbd[i]);
-			printf("\n");
-		}
-		//draw(&Gr, (uvec2){0}, res); //outputs and clears buffer
+		Input(); //get user input since last frame
+		
+		draw(&Gr, (uvec2){0}, res); //outputs buffer
 
 		StopTimer(ftimer);
 		exec_time = mod32(dt_usec(ftimer),MPS); //Compute execution Δt

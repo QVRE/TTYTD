@@ -35,18 +35,15 @@ void Exit() {
 	exit(0);
 }
 
-void Input(struct timeval *mtv) { //read stdin and sort kbd and mouse input
+void Input() { //read stdin and sort kbd and mouse input
 	u8 input[128]; //we read stdin to here
 	kbdSize=0;
+	struct timeval mtv = {0,1}; //max sleep time
 	fd_set fdread;
 	FD_ZERO(&fdread); //clear select set
 	FD_SET(0,&fdread); //add fd 0 (stdin)
-	if (select(1,&fdread,NULL,NULL,mtv)>0) { //check if stdin has data
+	if (select(1,&fdread,NULL,NULL,&mtv)>0) { //check if stdin has data
 		const u32 insz = read(0,input,128); //128 bytes should be enough
-		for (u32 i=0; i<insz; i++) {
-			printf("%d ", input[i]);
-		}
-		if (insz) printf("\n");
 		for (u32 i=0; i<insz; i++) {
 			if (input[i]==3) Exit(); //ctrl + C
 			if (input[i]==27) { //ESC

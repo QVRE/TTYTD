@@ -26,5 +26,5 @@ void ElafriInit(); //Initialization procedures
 
 void Exit();
 
-void Input(struct timeval *mtv); //Gets user input from Terminal
+void Input(); //Gets user input from Terminal
 #endif
