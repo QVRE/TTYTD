@@ -21,7 +21,7 @@ elafriContext ElafriInit() { //Init procedures
 	raw.c_lflag &= ~(ECHO | ICANON | ISIG); //turn off some flags
 	tcsetattr(0, TCSAFLUSH, &raw);
 
-	write(0,"\e[?25l",7); //enable mouse tracking and hide term cursor
+	write(0,"\e[?25l",7); //hide term cursor
 	current.res = GetResolution();
 	GrInit(current.res);
 	return current;
